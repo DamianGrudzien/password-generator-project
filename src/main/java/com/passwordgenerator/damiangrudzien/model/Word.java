@@ -9,7 +9,6 @@ import javax.persistence.*;
 @Setter
 @Builder
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 public class Word {
     @Id
@@ -18,5 +17,7 @@ public class Word {
     private Long id;
 
     private String word;
+
+    public Word(){}
 
 }
