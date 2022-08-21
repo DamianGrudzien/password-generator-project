@@ -1,0 +1,12 @@
+com\passwordgenerator\damiangrudzien\repository\WordRepository.class
+com\passwordgenerator\damiangrudzien\Password.class
+com\passwordgenerator\damiangrudzien\model\Word.class
+com\passwordgenerator\damiangrudzien\PasswordAlternation.class
+com\passwordgenerator\damiangrudzien\ToDto.class
+com\passwordgenerator\damiangrudzien\service\WordService.class
+com\passwordgenerator\damiangrudzien\DTO\WordDto$WordDtoBuilder.class
+com\passwordgenerator\damiangrudzien\DTO\WordDto.class
+com\passwordgenerator\damiangrudzien\model\Word$WordBuilder.class
+com\passwordgenerator\damiangrudzien\Application.class
+com\passwordgenerator\damiangrudzien\service\WordsGenerator.class
+com\passwordgenerator\damiangrudzien\Password$PasswordBuilder.class
