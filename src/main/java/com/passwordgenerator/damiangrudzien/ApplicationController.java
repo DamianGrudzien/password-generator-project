@@ -1,7 +1,10 @@
 package com.passwordgenerator.damiangrudzien;
 
-import com.passwordgenerator.damiangrudzien.model.WordDto;
-import com.passwordgenerator.damiangrudzien.service.PasswordGenerator;
+import com.passwordgenerator.damiangrudzien.DTO.WordDto;
+import com.passwordgenerator.damiangrudzien.model.PasswordChar;
+import com.passwordgenerator.damiangrudzien.model.PasswordImpl;
+import com.passwordgenerator.damiangrudzien.util.ToDto;
+import com.passwordgenerator.damiangrudzien.util.WordsGenerator;
 import com.passwordgenerator.damiangrudzien.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +26,36 @@ public class ApplicationController{
         return wordService.findById(id).map(ToDto::wordAsDto).orElseThrow(RuntimeException::new);
     }
 
-    @GetMapping("/passwords/random")
-    public String getRandomPassword(){
-        return PasswordGenerator.getRandomPass(wordService);
+    @GetMapping("/passwords/randomWord")
+    public String getRandomWord(){
+        PasswordImpl password = PasswordImpl.builder()
+                .charAmount(0)
+                .wordAmount(1)
+                .upperFirst(true)
+                .build();
+        password.setWords(WordsGenerator.getRandomPass(wordService,password.getWordAmount()));
+
+        return (new PasswordChar(password)).toString();
     }
+
+    @GetMapping("/passwords/random/{words}")
+    public String getRandomWords(@PathVariable("words") Integer words){
+        PasswordImpl password = PasswordImpl.builder()
+                .charAmount(0)
+                .wordAmount(words)
+                .upperFirst(true)
+                .build();
+        password.setWords(WordsGenerator.getRandomPass(wordService,password.getWordAmount()));
+
+        return (new PasswordChar(password)).toString();
+    }
+//
+//    @GetMapping("/passwords/random/")
+//    public String getRandomWords(@RequestParam("words") Integer words, @RequestParam("chars") Integer chars, @RequestParam("numbers") Integer numbers , @RequestParam("upperFirst") boolean upperFirst){
+//        return WordsGenerator.getRandomPass(wordService, words);
+//    }
+
+
 
     @PostMapping("/")
     @ResponseBody
