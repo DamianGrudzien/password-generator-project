@@ -9,7 +9,6 @@ import java.util.Random;
 
 public class NumberGenerator {
 
-    private WordService wordServiceLocal;
     public static List<Integer> makeRandomNumbers(int amount, int maxValue) {
         Random random = new Random();
         List<Integer> randomNumbers = new ArrayList<>();

@@ -1,9 +1,11 @@
-package com.passwordgenerator.damiangrudzien.model;
+package com.passwordgenerator.damiangrudzien.model.Decorator;
 
+
+import com.passwordgenerator.damiangrudzien.model.implementation.PasswordImpl;
 
 import java.util.List;
 
-public abstract class PasswordDecorator implements Password{
+public abstract class PasswordDecorator implements Password {
     private PasswordImpl passwordImpl;
 
     public PasswordDecorator(PasswordImpl passwordImpl) {

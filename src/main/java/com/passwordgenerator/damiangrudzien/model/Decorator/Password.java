@@ -1,4 +1,4 @@
-package com.passwordgenerator.damiangrudzien.model;
+package com.passwordgenerator.damiangrudzien.model.Decorator;
 
 import java.util.List;
 

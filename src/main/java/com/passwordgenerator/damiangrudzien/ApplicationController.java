@@ -1,8 +1,8 @@
 package com.passwordgenerator.damiangrudzien;
 
 import com.passwordgenerator.damiangrudzien.DTO.WordDto;
-import com.passwordgenerator.damiangrudzien.model.PasswordChar;
-import com.passwordgenerator.damiangrudzien.model.PasswordImpl;
+import com.passwordgenerator.damiangrudzien.model.implementation.PasswordChar;
+import com.passwordgenerator.damiangrudzien.model.implementation.PasswordImpl;
 import com.passwordgenerator.damiangrudzien.util.ToDto;
 import com.passwordgenerator.damiangrudzien.util.WordsGenerator;
 import com.passwordgenerator.damiangrudzien.service.WordService;

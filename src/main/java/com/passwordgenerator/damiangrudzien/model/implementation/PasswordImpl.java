@@ -1,6 +1,7 @@
-package com.passwordgenerator.damiangrudzien.model;
+package com.passwordgenerator.damiangrudzien.model.implementation;
 
 
+import com.passwordgenerator.damiangrudzien.model.Decorator.Password;
 import lombok.*;
 
 import java.util.List;
