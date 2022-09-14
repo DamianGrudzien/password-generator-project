@@ -1,6 +1,5 @@
 package com.passwordgenerator.damiangrudzien.util;
 
-import com.passwordgenerator.damiangrudzien.model.Decorator.PasswordDecorator;
 import com.passwordgenerator.damiangrudzien.model.implementation.PasswordChar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,18 +14,19 @@ public class Chars {
     static final String CONFIG_FILE_PATH = "src/main/resources/config.properties";
     private static final Logger logger = LoggerFactory.getLogger(PasswordChar.class);
 
-    public static Map<String, String> fillChars() {
-        Map<String, String> charsToReplace = new HashMap<>();
+    public static Map<Character, String> fillChars() {
+        Map<Character, String> charsToReplace = new HashMap<>();
+
         try {
             FileInputStream fis = new FileInputStream(CONFIG_FILE_PATH);
             Properties properties = new Properties();
             properties.load(fis);
 
-            properties.forEach((key, value) -> charsToReplace.putIfAbsent(key.toString(), value.toString()));
+            properties.forEach((key, value) -> charsToReplace.putIfAbsent(key.toString().charAt(0), value.toString()));
             return charsToReplace;
         } catch (IOException e) {
             logger.error(e.getMessage());
-            return Map.of();
+            return null;
         }
 
     }

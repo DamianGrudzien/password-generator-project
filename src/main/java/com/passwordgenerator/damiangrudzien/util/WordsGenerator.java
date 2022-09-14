@@ -2,7 +2,8 @@ package com.passwordgenerator.damiangrudzien.util;
 
 import com.passwordgenerator.damiangrudzien.service.WordService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WordsGenerator {
 
@@ -10,7 +11,8 @@ public class WordsGenerator {
 
     public static List<String> getRandomPass(WordService wordService, Integer words) {
         wordServiceLocal = wordService;
-        List<Integer> listOfNumbers = NumberGenerator.makeRandomNumbers(words, wordServiceLocal.findAll().size());
+        List<Integer> listOfNumbers = NumberGenerator.makeRandomNumbers(words, wordServiceLocal.findAll()
+                                                                                               .size());
 
         return getRandomWords(listOfNumbers);
     }
