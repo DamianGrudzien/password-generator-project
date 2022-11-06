@@ -1,20 +1,21 @@
 package com.passwordgenerator.damiangrudzien.util;
 
-import com.passwordgenerator.damiangrudzien.model.Word;
-import com.passwordgenerator.damiangrudzien.service.WordService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class NumberGenerator {
+    private static final Random RANDOM = new Random();
 
-    private WordService wordServiceLocal;
+    private NumberGenerator() {
+        throw new IllegalCallerException();
+    }
+
     public static List<Integer> makeRandomNumbers(int amount, int maxValue) {
-        Random random = new Random();
+
         List<Integer> randomNumbers = new ArrayList<>();
-        for(int i = 0; i < amount; i++){
-            randomNumbers.add(getRandom(random, maxValue));
+        for (int i = 0; i < amount; i++) {
+            randomNumbers.add(getRandom(RANDOM, maxValue));
         }
         return randomNumbers;
     }

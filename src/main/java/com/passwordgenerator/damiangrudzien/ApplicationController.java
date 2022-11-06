@@ -1,19 +1,30 @@
 package com.passwordgenerator.damiangrudzien;
 
-import com.passwordgenerator.damiangrudzien.DTO.WordDto;
-import com.passwordgenerator.damiangrudzien.model.PasswordChar;
-import com.passwordgenerator.damiangrudzien.model.PasswordImpl;
-import com.passwordgenerator.damiangrudzien.util.ToDto;
-import com.passwordgenerator.damiangrudzien.util.WordsGenerator;
+import com.passwordgenerator.damiangrudzien.dto.ErrorDTO;
+import com.passwordgenerator.damiangrudzien.dto.WordDto;
+import com.passwordgenerator.damiangrudzien.exceptions.BusinessException;
+import com.passwordgenerator.damiangrudzien.exceptions.NotFoundException;
+import com.passwordgenerator.damiangrudzien.model.PasswordDTO;
+import com.passwordgenerator.damiangrudzien.model.PasswordProperties;
+import com.passwordgenerator.damiangrudzien.service.PasswordService;
 import com.passwordgenerator.damiangrudzien.service.WordService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class ApplicationController{
-
-    @Autowired
+public class ApplicationController {
     WordService wordService;
+    PasswordService passwordService;
+
+
+
+    public ApplicationController(
+            WordService wordService,
+            PasswordService passwordService) {
+        this.wordService = wordService;
+        this.passwordService = passwordService;
+    }
+
 
     @GetMapping("/")
     @ResponseBody
@@ -22,39 +33,29 @@ public class ApplicationController{
     }
 
     @GetMapping("/passwords/{id}")
-    public WordDto getPassword(@PathVariable("id") Long id){
-        return wordService.findById(id).map(ToDto::wordAsDto).orElseThrow(RuntimeException::new);
+    public WordDto getPassword(@PathVariable("id") Long id) {
+        return wordService.findById(id);
     }
 
     @GetMapping("/passwords/randomWord")
-    public String getRandomWord(){
-        PasswordImpl password = PasswordImpl.builder()
-                .charAmount(0)
-                .wordAmount(1)
-                .upperFirst(true)
-                .build();
-        password.setWords(WordsGenerator.getRandomPass(wordService,password.getWordAmount()));
-
-        return (new PasswordChar(password)).toString();
+    public String getRandomWord() {
+        return "random word";
     }
 
     @GetMapping("/passwords/random/{words}")
-    public String getRandomWords(@PathVariable("words") Integer words){
-        PasswordImpl password = PasswordImpl.builder()
-                .charAmount(0)
-                .wordAmount(words)
-                .upperFirst(true)
-                .build();
-        password.setWords(WordsGenerator.getRandomPass(wordService,password.getWordAmount()));
-
-        return (new PasswordChar(password)).toString();
+    public String getRandomWords(@PathVariable("words") Integer words) {
+        return "list of words";
     }
-//
-//    @GetMapping("/passwords/random/")
-//    public String getRandomWords(@RequestParam("words") Integer words, @RequestParam("chars") Integer chars, @RequestParam("numbers") Integer numbers , @RequestParam("upperFirst") boolean upperFirst){
-//        return WordsGenerator.getRandomPass(wordService, words);
-//    }
 
+    @GetMapping("/passwords/random/words-test")
+    public PasswordDTO getRandomWordsTest(@RequestBody PasswordProperties pp){
+        return passwordService.getPassword(pp);
+    }
+
+    @GetMapping("/passwords/random/")
+    public String getRandomWords(@RequestParam("words") Integer words, @RequestParam("chars") Integer chars, @RequestParam("numbers") Integer numbers , @RequestParam("upperFirst") boolean upperFirst){
+        return wordService.getRandomWord();
+    }
 
 
     @PostMapping("/")
@@ -63,5 +64,11 @@ public class ApplicationController{
         return "post-" + root;
     }
 
+
+    @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    ErrorDTO exceptionHandler(BusinessException be){
+        return new ErrorDTO(be.getMessage());
+    }
 
 }
