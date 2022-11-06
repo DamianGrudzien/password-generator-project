@@ -1,32 +1,34 @@
 package com.passwordgenerator.damiangrudzien.util;
 
 import com.passwordgenerator.damiangrudzien.service.WordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class WordsGenerator {
 
-    private static WordService wordServiceLocal;
-
-    public static List<String> getRandomPass(WordService wordService, Integer words) {
-        wordServiceLocal = wordService;
-        List<Integer> listOfNumbers = NumberGenerator.makeRandomNumbers(words, wordServiceLocal.findAll()
-                                                                                               .size());
-
-        return getRandomWords(listOfNumbers);
+    WordService wordService;
+    private WordsGenerator() {
+        throw new IllegalCallerException();
     }
 
-    private static List<String> getRandomWords(List<Integer> integers) {
+    @Autowired
+    public WordsGenerator(WordService wordService) {
+        this.wordService = wordService;
+    }
+
+    public List<String> getRandomPass(Integer numberOfWords) {
+
+        List<Integer> listOfNumbers = NumberGenerator.makeRandomNumbers(numberOfWords, wordService.findAll().size());
+
         List<String> passwords = new ArrayList<>();
-        for (Integer integer : integers) {
-            passwords.add(wordServiceLocal
-                    .findById((long) integer)
-                    .map(ToDto::wordAsDto)
-                    .orElseThrow(RuntimeException::new)
-                    .getWord());
+        for (Integer integer : listOfNumbers) {
+            passwords.add(wordService.findById((long) integer).getWord());
         }
+
         return passwords;
     }
-
 }

@@ -1,4 +1,4 @@
-package com.passwordgenerator.damiangrudzien.DTO;
+package com.passwordgenerator.damiangrudzien.dto;
 
 import lombok.*;
 
