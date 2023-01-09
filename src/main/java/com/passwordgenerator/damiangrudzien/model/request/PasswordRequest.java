@@ -1,4 +1,4 @@
-package com.passwordgenerator.damiangrudzien.model;
+package com.passwordgenerator.damiangrudzien.model.request;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -10,8 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PasswordProperties {
+public class PasswordRequest {
     Integer wordAmount;
     Integer charAmount;
+    Integer numbers;
     Boolean upperFirst;
 }

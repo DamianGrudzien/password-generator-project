@@ -11,16 +11,11 @@ public class NumberGenerator {
         throw new IllegalCallerException();
     }
 
-    public static List<Integer> makeRandomNumbers(int amount, int maxValue) {
-
+    public static List<Integer> getRandomNumbers(int amount, int maxValue) {
         List<Integer> randomNumbers = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
-            randomNumbers.add(getRandom(RANDOM, maxValue));
+            randomNumbers.add(RANDOM.nextInt(maxValue));
         }
         return randomNumbers;
-    }
-
-    public static int getRandom(Random random, int maxValue) {
-        return random.nextInt(maxValue);
     }
 }

@@ -1,5 +1,7 @@
 package com.passwordgenerator.damiangrudzien.util;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
@@ -7,7 +9,8 @@ import java.util.Map;
 import java.util.Properties;
 
 public class Chars {
-    static final String CONFIG_FILE_PATH = "src/main/resources/config.properties";
+    @Value("${chars.properties.file-location}")
+    private static String configFilePath;
 
     private Chars() {
         throw new IllegalCallerException();
@@ -16,7 +19,7 @@ public class Chars {
     public static Map<String, String> getCharToReplace() {
         Map<String, String> charsToReplace = new HashMap<>();
 
-        try (FileInputStream fis = new FileInputStream(CONFIG_FILE_PATH)) {
+        try (FileInputStream fis = new FileInputStream(configFilePath)) {
             Properties properties = new Properties();
             properties.load(fis);
 

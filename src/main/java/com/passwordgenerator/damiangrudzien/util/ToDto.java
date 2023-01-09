@@ -1,7 +1,7 @@
 package com.passwordgenerator.damiangrudzien.util;
 
+import com.passwordgenerator.damiangrudzien.model.dto.WordDto;
 import com.passwordgenerator.damiangrudzien.model.Word;
-import com.passwordgenerator.damiangrudzien.dto.WordDto;
 
 public class ToDto {
     private ToDto() {
