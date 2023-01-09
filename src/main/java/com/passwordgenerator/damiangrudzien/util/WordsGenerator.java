@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.passwordgenerator.damiangrudzien.util.NumberGenerator.getRandomNumbers;
+
 @Component
 public class WordsGenerator {
-
     WordService wordService;
+
     private WordsGenerator() {
         throw new IllegalCallerException();
     }
@@ -22,11 +24,15 @@ public class WordsGenerator {
 
     public List<String> getRandomPass(Integer numberOfWords) {
 
-        List<Integer> listOfNumbers = NumberGenerator.makeRandomNumbers(numberOfWords, wordService.findAll().size());
+        List<Integer> generatedNumbers = getRandomNumbers(numberOfWords,
+                                                          wordService.findAll()
+                                                                     .size());
 
         List<String> passwords = new ArrayList<>();
-        for (Integer integer : listOfNumbers) {
-            passwords.add(wordService.findById((long) integer).getWord());
+        for (Integer integer : generatedNumbers) {
+            passwords.add(wordService
+                                  .findById((long) integer)
+                                  .getWord());
         }
 
         return passwords;
