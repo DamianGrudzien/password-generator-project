@@ -9,25 +9,26 @@ import java.util.Map;
 import java.util.Properties;
 
 public class Chars {
-    @Value("${chars.properties.file-location}")
-    private static String configFilePath;
 
-    private Chars() {
-        throw new IllegalCallerException();
-    }
+	@Value("${chars.properties.file-location}")
+	private static String configFilePath;
 
-    public static Map<String, String> getCharToReplace() {
-        Map<String, String> charsToReplace = new HashMap<>();
+	private Chars() {
+		throw new IllegalCallerException();
+	}
 
-        try (FileInputStream fis = new FileInputStream(configFilePath)) {
-            Properties properties = new Properties();
-            properties.load(fis);
+	public static Map<String, String> getCharToReplace() {
+		Map<String, String> charsToReplace = new HashMap<>();
 
-            properties.forEach((key, value) -> charsToReplace.putIfAbsent(key.toString(), value.toString()));
-            return charsToReplace;
-        } catch (IOException e) {
-            return Map.of();
-        }
+		try (FileInputStream fis = new FileInputStream(configFilePath)) {
+			Properties properties = new Properties();
+			properties.load(fis);
 
-    }
+			properties.forEach((key, value) -> charsToReplace.putIfAbsent(key.toString(), value.toString()));
+			return charsToReplace;
+		} catch (IOException e) {
+			return Map.of();
+		}
+
+	}
 }
