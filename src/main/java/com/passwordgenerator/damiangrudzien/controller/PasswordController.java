@@ -6,9 +6,6 @@ import com.passwordgenerator.damiangrudzien.model.dto.PasswordDTO;
 import com.passwordgenerator.damiangrudzien.model.request.PasswordRequestDTO;
 import com.passwordgenerator.damiangrudzien.model.response.ErrorResponse;
 import com.passwordgenerator.damiangrudzien.service.PasswordService;
-import com.passwordgenerator.damiangrudzien.service.WordService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/password/")
 
 public class PasswordController {
+
 	@Autowired
 	PasswordService passwordService;
 
@@ -34,7 +32,6 @@ public class PasswordController {
 	public PasswordDTO getPasswordWithDefaultProperties() {
 		return passwordService.getDefaultPassword();
 	}
-
 
 	@ExceptionHandler(NotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)

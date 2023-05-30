@@ -29,8 +29,8 @@ public class Word {
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) {
             return false;
         }
-        Word word = (Word) o;
-        return id != null && Objects.equals(id, word.id);
+        Word w = (Word) o;
+        return id != null && Objects.equals(id, w.id);
     }
 
     @Override

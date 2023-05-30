@@ -1,17 +1,22 @@
 package com.passwordgenerator.damiangrudzien.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Value;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Value
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Builder
 public class Password {
-    List<String> words = new ArrayList<>();
 
-    public void addWord(String word) {
-        words.add(word);
-    }
+	List<String> words = new ArrayList<>();
+
+	public void addWord(String word) {
+		words.add(word);
+	}
 }

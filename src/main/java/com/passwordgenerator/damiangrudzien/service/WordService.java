@@ -4,13 +4,9 @@ import com.passwordgenerator.damiangrudzien.exceptions.NotFoundException;
 import com.passwordgenerator.damiangrudzien.model.Word;
 import com.passwordgenerator.damiangrudzien.model.dto.WordDto;
 import com.passwordgenerator.damiangrudzien.repository.WordRepository;
-import com.passwordgenerator.damiangrudzien.util.ToDto;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +15,18 @@ import java.util.Optional;
 import static com.passwordgenerator.damiangrudzien.util.NumberGenerator.getRandomNumbers;
 
 @Service
+@AllArgsConstructor
 public class WordService {
 
-	@Autowired
 	private WordRepository wordRepository;
-	private ModelMapper modelMapper = new ModelMapper();
+	private ModelMapper modelMapper;
 
 	public WordDto findById(Long id) {
 		Optional<Word> wordById = wordRepository.findById(id);
 		if (wordById.isEmpty()) {
 			throw new NotFoundException();
 		}
-		return wordById.map(word -> modelMapper.map(word,WordDto.class))
+		return wordById.map(word -> modelMapper.map(word, WordDto.class))
 				.orElseThrow(NotFoundException::new);
 	}
 
