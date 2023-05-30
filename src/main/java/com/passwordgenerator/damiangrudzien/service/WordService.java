@@ -7,7 +7,10 @@ import com.passwordgenerator.damiangrudzien.repository.WordRepository;
 import com.passwordgenerator.damiangrudzien.util.ToDto;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +19,18 @@ import java.util.Optional;
 import static com.passwordgenerator.damiangrudzien.util.NumberGenerator.getRandomNumbers;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class WordService {
 
+	@Autowired
 	private WordRepository wordRepository;
+	private ModelMapper modelMapper = new ModelMapper();
 
 	public WordDto findById(Long id) {
 		Optional<Word> wordById = wordRepository.findById(id);
 		if (wordById.isEmpty()) {
 			throw new NotFoundException();
 		}
-		return wordById.map(ToDto::wordAsDto)
+		return wordById.map(word -> modelMapper.map(word,WordDto.class))
 				.orElseThrow(NotFoundException::new);
 	}
 
@@ -36,17 +39,19 @@ public class WordService {
 	}
 
 	public String getRandomWord() {
-		return this.getRandomPass(1L).get(0);
-	}
-
-	public List<String> getRandomPass(Long numberOfWords) {
+		Long numberOfWords = 1L;
 		List<Long> generatedNumbers = getRandomNumbers(numberOfWords, this.wordRepository.count());
 
-		List<String> passwords = new ArrayList<>();
-		for (Long aLong : generatedNumbers) {
-			passwords.add(this.findById(aLong).getWord());
-		}
+		return this.findById(generatedNumbers.get(0)).getWord();
+	}
 
-		return passwords;
+	public List<String> getRandomWords(Long numberOfWords) {
+		List<Long> generatedNumbers = getRandomNumbers(numberOfWords, this.wordRepository.count());
+		List<String> wordsFromDB = new ArrayList<>();
+		for (Long number : generatedNumbers) {
+			String wordFromDB = this.findById(number).getWord();
+			wordsFromDB.add(wordFromDB);
+		}
+		return wordsFromDB;
 	}
 }

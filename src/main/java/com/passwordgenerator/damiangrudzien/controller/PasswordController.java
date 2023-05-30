@@ -9,6 +9,7 @@ import com.passwordgenerator.damiangrudzien.service.PasswordService;
 import com.passwordgenerator.damiangrudzien.service.WordService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/password/")
-@AllArgsConstructor
-@NoArgsConstructor
-public class PasswordController {
 
-	WordService wordService;
+public class PasswordController {
+	@Autowired
 	PasswordService passwordService;
 
 	@GetMapping("/")
