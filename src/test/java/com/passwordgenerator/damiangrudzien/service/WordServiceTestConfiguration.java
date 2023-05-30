@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class WordServiceTestConfiguration {
 
-    @Bean
-    @Primary
-    public WordService wordService(){
-        return Mockito.mock(WordService.class);
-    }
+//    @Bean
+//    @Primary
+//    public WordService wordService(){
+//        return Mockito.mock(WordService.class);
+//    }
 }
