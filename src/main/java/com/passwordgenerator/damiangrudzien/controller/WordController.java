@@ -3,9 +3,10 @@ package com.passwordgenerator.damiangrudzien.controller;
 import com.passwordgenerator.damiangrudzien.exceptions.BusinessException;
 import com.passwordgenerator.damiangrudzien.exceptions.NotFoundException;
 import com.passwordgenerator.damiangrudzien.model.Word;
-import com.passwordgenerator.damiangrudzien.model.dto.WordDto;
 import com.passwordgenerator.damiangrudzien.model.response.ErrorResponse;
 import com.passwordgenerator.damiangrudzien.service.WordService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/word")
+@Slf4j
 public class WordController {
 
 	public WordController(WordService wordService) {
@@ -28,12 +30,13 @@ public class WordController {
 	WordService wordService;
 
 	@GetMapping("/{id}")
-	public WordDto getPassword(@PathVariable("id") Long id) {
+	public Word getWordById(@PathVariable("id") Long id) {
 		return wordService.findById(id);
 	}
 
 	@GetMapping("/random/")
 	public String getRandomWord() {
+		log.info("Getting random word.");
 		return wordService.getRandomWord();
 	}
 

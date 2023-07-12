@@ -1,10 +1,14 @@
 package com.passwordgenerator.damiangrudzien.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 import org.hibernate.Hibernate;
 
-
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
@@ -14,10 +18,13 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Word {
+//@RedisHash
+public class Word implements Serializable {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+//    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     private Long id;
     private String word;
 

@@ -1,0 +1,1 @@
+COPY word (word) FROM 'classpath:words.csv' CSV;

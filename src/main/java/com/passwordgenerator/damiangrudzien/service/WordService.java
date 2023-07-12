@@ -2,8 +2,7 @@ package com.passwordgenerator.damiangrudzien.service;
 
 import com.passwordgenerator.damiangrudzien.exceptions.NotFoundException;
 import com.passwordgenerator.damiangrudzien.model.Word;
-import com.passwordgenerator.damiangrudzien.model.dto.WordDto;
-import com.passwordgenerator.damiangrudzien.repository.WordRepository;
+import com.passwordgenerator.damiangrudzien.repository.jpa.WordRepository;
 import com.passwordgenerator.damiangrudzien.util.NumberGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,23 +26,22 @@ public class WordService {
 	private NumberGenerator numberGenerator;
 	private CacheManager cacheManager;
 
-	@Cacheable(
-			cacheNames = "findByIdCache",
-			key = "#id",
-			unless = "#result == null"
-	)
-	public WordDto findById(Long id) {
+//	@Cacheable(
+//			value = "Word",
+//			key = "#id",
+//			unless = "#Word == null"
+//	)
+	@Cacheable(key = "#id", value = "WORD")
+	public Word findById(Long id) {
+		log.info("Find by Id started.");
 		Optional<Word> wordById = wordRepository.findById(id);
-		if (wordById.isEmpty()) {
-			throw new NotFoundException();
-		}
-		return wordById.map(word -> modelMapper.map(word, WordDto.class))
-				.orElseThrow(NotFoundException::new);
+
+		return wordById.orElseThrow(NotFoundException::new);
 	}
 
 	@Cacheable(
-			cacheNames = "findAllCache",
-			unless = "#result == null"
+			value = "Word"
+//			unless = "#result == null"
 	)
 	public List<Word> findAll() {
 		return wordRepository.findAll();
@@ -51,14 +49,18 @@ public class WordService {
 
 	public String getRandomWord() {
 		Long numberOfWords = 1L;
-		List<Long> generatedNumbers = numberGenerator.getRandomNumbers(numberOfWords, this.wordRepository.count());
+		long sumOfWords = this.wordRepository.count();
+		log.info("All words in db: " + sumOfWords);
+		List<Long> generatedNumbers = numberGenerator.getRandomNumbers(numberOfWords, sumOfWords);
 
 		return this.findById(generatedNumbers.get(0)).getWord();
 	}
 
 
 	public List<String> getRandomWords(Long numberOfWords) {
-		List<Long> generatedNumbers = numberGenerator.getRandomNumbers(numberOfWords, this.wordRepository.count());
+		long sumOfWords = this.wordRepository.count();
+		log.info("All words in db: " + sumOfWords);
+		List<Long> generatedNumbers = numberGenerator.getRandomNumbers(numberOfWords, sumOfWords);
 		List<String> wordsFromDB = new ArrayList<>();
 		for (Long number : generatedNumbers) {
 			String wordFromDB = this.findById(number).getWord();

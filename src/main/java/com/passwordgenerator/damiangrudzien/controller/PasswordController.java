@@ -6,6 +6,7 @@ import com.passwordgenerator.damiangrudzien.model.dto.PasswordDTO;
 import com.passwordgenerator.damiangrudzien.model.request.PasswordRequestDTO;
 import com.passwordgenerator.damiangrudzien.model.response.ErrorResponse;
 import com.passwordgenerator.damiangrudzien.service.PasswordService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/password/")
-
+@Slf4j
 public class PasswordController {
 
 	@Autowired
@@ -25,11 +26,13 @@ public class PasswordController {
 
 	@GetMapping("/")
 	public PasswordDTO getPasswordWithProperties(@RequestBody PasswordRequestDTO passwordRequest) {
+		log.info("Getting password from service.");
 		return passwordService.getPassword(passwordRequest);
 	}
 
 	@GetMapping("/default")
 	public PasswordDTO getPasswordWithDefaultProperties() {
+		log.info("Getting default password.");
 		return passwordService.getDefaultPassword();
 	}
 
