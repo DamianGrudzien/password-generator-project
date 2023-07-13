@@ -13,10 +13,11 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 @Slf4j
 //public class CsvDataLoader implements ApplicationListener<ContextRefreshedEvent> {
-public class CsvDataLoader implements ApplicationRunner{
+//public class CsvDataLoader implements ApplicationRunner{
+public class CsvDataLoader{
     @Autowired
     private CsvReader csvReader;
 
@@ -26,7 +27,7 @@ public class CsvDataLoader implements ApplicationRunner{
     @Value("${csv.file.path}")
     private String csvFilePath;
 
-    @Override
+//    @Override
     public void run(ApplicationArguments args) throws Exception {
         long tableSize = wordRepository.count();
         if (tableSize > 10000){
