@@ -1,3 +1,0 @@
-LOAD DATA LOCAL INFILE 'classpath:words.csv' into TABLE word
-FIELDS TERMINATED BY ',' ENCLOSED BY '"'
-LINES TERMINATED BY '\r\n';

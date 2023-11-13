@@ -3,6 +3,7 @@ package com.passwordgenerator.damiangrudzien.config;
 import com.passwordgenerator.damiangrudzien.model.Word;
 import com.passwordgenerator.damiangrudzien.repository.jpa.WordRepository;
 import com.passwordgenerator.damiangrudzien.util.CsvReader;
+import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,50 +16,72 @@ import java.util.List;
 
 @Component
 @Slf4j
-//public class CsvDataLoader implements ApplicationListener<ContextRefreshedEvent> {
-public class CsvDataLoader implements ApplicationRunner{
-//public class CsvDataLoader{
-    @Autowired
-    private CsvReader csvReader;
+public class CsvDataLoader implements ApplicationRunner {
 
-    @Autowired
-    private WordRepository wordRepository;
+	@Autowired
+	private CsvReader csvReader;
 
-    @Value("${csv.file.path}")
-    private String csvFilePath;
+	@Autowired
+	private WordRepository wordRepository;
 
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        long tableSize = wordRepository.count();
-        if (tableSize > 10000){
-            return;
-        }
-        log.info("Start to load words from file");
-        List<Word> wordsToSave = csvReader.loadDataFromCsv(csvFilePath);
-        List<Word> queryList = new ArrayList<>();
-        int counter = 0;
-        log.info("Counter is: " + counter);
-        log.info("Amount of word to save: " + wordsToSave.size());
-        for (int i = 0; i < wordsToSave.size() ;i++) {
-            queryList.add(wordsToSave.get(i));
-            counter++;
+	@Value("${csv.file.path}")
+	private String csvFilePath;
 
-            if (counter >= 500 || ((wordsToSave.size() - i) < 500)) {
-                log.info("About to save words to DB");
-                log.info("Counter is: " + counter);
-                log.info("QueryList size: " + queryList.size());
-                try {
-                    wordRepository.saveAll(queryList);
-                    log.info("Saved");
-                    counter = 0;
-                } catch (Exception e) {
-                    log.info("Error: " + e.getMessage());
-//                throw new RuntimeException(e);
-                }
-                queryList = new ArrayList<>();
-            }
+	@Override
+	public void run(ApplicationArguments args) throws Exception {
+		if (wordRepository == null) {
+			log.error("Word repository is null! Unable to obtain words!");
+			return;
+		} else if (StringUtils.isEmpty(csvFilePath)) {
+			log.error("File Path is null or empty. Unable to read from csv file!");
+			return;
+		}
 
-        }
-        log.info("Saving ended!");
-    }
+		long tableSize = wordRepository.count();
+		if (tableSize > 1) {
+			return;
+		}
+		log.info("Table size before: " + tableSize);
+		log.info("Start to load words from file");
+		List<Word> wordsToSave = csvReader.loadDataFromCsv(csvFilePath);
+		log.info("Words loaded");
+		List<Word> queryList = new ArrayList<>();
+		long wordsSize = wordsToSave.size();
+		int counter = 0;
+		log.debug("Amount of word to save: " + wordsToSave.size());
+		log.info("Saving words to DB.");
+		for (int i = 0; ((wordsSize - i) != 0); i++) {
+			Word word = wordsToSave.get(i);
+			queryList.add(word);
+			counter++;
+			if (counter == 500) {
+				logInformation(wordsToSave, queryList, i);
+				saveWordsInDB(queryList);
+				counter = 0;
+				queryList = new ArrayList<>();
+			} else if (((wordsToSave.size() - i) <= counter)) {
+				saveWordsInDB(queryList);
+				break;
+			}
+		}
+		log.info("Table size after: " + wordRepository.count());
+		log.info("Saving ended!");
+	}
+
+	private static void logInformation(List<Word> wordsToSave, List<Word> queryList, int i) {
+		log.debug("About to save words to DB");
+		log.debug("Words to save is: " + wordsToSave.size());
+		log.debug("I value: " + i);
+		log.debug("Difference is: " + (wordsToSave.size() - i));
+		log.debug("QueryList size: " + queryList.size());
+	}
+
+	private void saveWordsInDB(List<Word> queryList) {
+		try {
+			wordRepository.saveAll(queryList);
+			log.debug("Saved");
+		} catch (Exception e) {
+			log.error("Error: " + e.getMessage());
+		}
+	}
 }
