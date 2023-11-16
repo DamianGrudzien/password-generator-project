@@ -4,11 +4,10 @@ import com.passwordgenerator.damiangrudzien.model.Word;
 import com.passwordgenerator.damiangrudzien.repository.jpa.WordRepository;
 import com.passwordgenerator.damiangrudzien.util.CsvReader;
 import io.micrometer.common.util.StringUtils;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class CsvDataLoader implements ApplicationRunner {
+public class CsvDataLoader {
 
 	@Autowired
 	private CsvReader csvReader;
@@ -27,8 +26,8 @@ public class CsvDataLoader implements ApplicationRunner {
 	@Value("${csv.file.path}")
 	private String csvFilePath;
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
+	@PostConstruct
+	public void run() {
 		if (wordRepository == null) {
 			log.error("Word repository is null! Unable to obtain words!");
 			return;
