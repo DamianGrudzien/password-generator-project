@@ -50,6 +50,24 @@
             <version>3.0.1</version>
             <scope>test</scope>
         </dependency>
+        <!--        Redis Cache    -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>5.0.0-alpha2</version>
+            <type>jar</type>
+            <exclusions>
+                <exclusion>  <!-- declare the exclusion here -->
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>3.1.1</version>
+        </dependency>
         <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-actuator</artifactId>
@@ -62,9 +80,20 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.5.4</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
             <version>3.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.13.0</version>
         </dependency>
     </dependencies>
 
@@ -95,7 +124,8 @@
                     <locations>
                         <location>filesystem:src/main/resources/db.migration</location>
                     </locations>
-                    <url>jdbc:postgresql://localhost:5432/password_generator</url>
+                    <url>jdbc:postgresql:dpg-cie0mcl9aq0ce398i3ng-a.frankfurt-postgres.render.com/words_db_iim7:5432/words_db_iim7</url>
+<!--                    <url>jdbc:postgresql://localhost:5432/password_generator</url>-->
                     <user>postgres</user>
                     <password>postgres</password>
                 </configuration>
