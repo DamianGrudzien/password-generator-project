@@ -48,7 +48,7 @@ public class WordService {
 	}
 
 	public String getRandomWord() {
-		Long numberOfWords = 1L;
+		long numberOfWords = 1L;
 		long sumOfWords = this.wordRepository.count();
 		log.info("All words in db: " + sumOfWords);
 		List<Long> generatedNumbers = numberGenerator.getRandomNumbers(numberOfWords, sumOfWords);

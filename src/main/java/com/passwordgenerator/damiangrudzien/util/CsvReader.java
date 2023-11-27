@@ -23,7 +23,7 @@ public class CsvReader {
 		try (InputStream resourceAsStream = CsvReader.class.getClassLoader().getResourceAsStream(csvFilePath)){
 			InputStreamReader iSR = new InputStreamReader(resourceAsStream);
 			BufferedReader br = new BufferedReader(iSR);
-			String line = "";
+			String line;
 			String last = "";
 			while ((line = br.readLine()) != null) {
 				Word wordToSave = new Word();
