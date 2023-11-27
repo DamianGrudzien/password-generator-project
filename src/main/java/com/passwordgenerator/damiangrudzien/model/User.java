@@ -10,7 +10,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -35,12 +34,10 @@ public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long userId;
+	private Long id;
 	private String username;
 	private String password;
-	@Enumerated(EnumType.STRING)
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "role_id")
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Role> roles;
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus = UserStatus.UNLOCK;
@@ -72,7 +69,7 @@ public class User implements UserDetails {
 	@Override
 	@JsonIgnore
 	public boolean isAccountNonLocked() {
-		return userStatus.equals(UserStatus.LOCK);
+		return userStatus.equals(UserStatus.UNLOCK);
 	}
 
 	@Override

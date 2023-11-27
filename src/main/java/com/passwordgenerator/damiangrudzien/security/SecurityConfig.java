@@ -1,17 +1,16 @@
 package com.passwordgenerator.damiangrudzien.security;
 
-import com.passwordgenerator.damiangrudzien.model.exceptions.AuthenticationEntryPointHandler;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,6 +34,8 @@ public class SecurityConfig {
 
 
     private AuthenticationEntryPointHandler authenticationEntryPointHandler;
+    private CustomAuthenticationFailureHandler authenticationFailureHandler;
+    private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -51,8 +52,10 @@ public class SecurityConfig {
         return new MvcRequestMatcher.Builder(introspector);
     }
 
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
+        log.info("inside cors");
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://damiangrudzien.github.io/password-generator-react-app/"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
@@ -70,21 +73,22 @@ public class SecurityConfig {
         http.cors(c -> c.configurationSource(corsConfigurationSource()));
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .authorizeHttpRequests(r ->
-                        r.requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui/index.html")).hasRole("ADMIN")
-                                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/user/")).permitAll()
-                                .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                                .requestMatchers(AntPathRequestMatcher.antMatcher("/actuator/**")).permitAll()
-                                .anyRequest().permitAll())
-                .csrf(c -> {
-                    try {
-                        c.disable().formLogin(f -> f.usernameParameter("username").passwordParameter("password"));
-                    } catch (Exception e) {
-                        log.error("Error while form login: " + e.getMessage());
-                        throw new RuntimeException(e);
-                    }
-                })
-                .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                            r.requestMatchers(AntPathRequestMatcher.antMatcher("/swagger-ui/index.html")).hasRole("ADMIN")
+                                    .requestMatchers(mvc.pattern(HttpMethod.POST,"/api/v1/user")).permitAll()
+                                    .requestMatchers(mvc.pattern("/actuator/**")).permitAll()
+                                    .requestMatchers(mvc.pattern("/api/v1/user/**")).authenticated()
+                                    .requestMatchers(mvc.pattern("/api/v1/word/**")).authenticated()
+                                    .requestMatchers(mvc.pattern("/api/v1/password/**")).authenticated()
+                                    .requestMatchers(mvc.pattern("/h2-console/**")).hasRole("ADMIN")
+                                    .anyRequest().authenticated())
+                .formLogin(f -> f.usernameParameter("username")
+                        .passwordParameter("password")
+                        .successHandler(authenticationSuccessHandler)
+                        .failureHandler(authenticationFailureHandler))
+                .headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .csrf(c -> c.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/actuator/**")))
                 .httpBasic(b -> b.authenticationEntryPoint(authenticationEntryPointHandler));
+        http.csrf(AbstractHttpConfigurer::disable).headers(h -> h.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
         return http.build();
     }
 }

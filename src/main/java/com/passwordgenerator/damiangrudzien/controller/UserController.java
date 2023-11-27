@@ -30,10 +30,11 @@ public class UserController {
 	private UserService userService;
 	private ModelMapper modelMapper;
 
-	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+//	@PreAuthorize("hasAnyRole('ADMIN','USER')")
 	@GetMapping()
 	@ResponseStatus(HttpStatus.OK)
 	public List<UserResponse> getAllUsers(){
+		log.info("Starting the return of users.");
 		return userService.getAllUsers();
 	}
 

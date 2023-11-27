@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
 
 	public List<UserResponse> getAllUsers() {
 		List<User> users = userRepository.findAll();
-		return users.stream().map(u -> modelMapper.map(u, UserResponse.class)).collect(Collectors.toList());
+		return users.stream().map(u -> modelMapper.map(u, UserResponse.class)).toList();
 	}
 
 	public User getUser(String username) {
@@ -44,9 +44,13 @@ public class UserService implements UserDetailsService {
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		if (userRepository.findAll().isEmpty()) {
-			user.setRoles(List.of(new Role(UserRole.ADMIN)));
+			Role role = new Role(UserRole.ADMIN);
+			role.setUser(user);
+			user.setRoles(List.of(role));
 		} else {
-			user.setRoles(List.of(new Role(UserRole.USER)));
+			Role role = new Role(UserRole.USER);
+			role.setUser(user);
+			user.setRoles(List.of(role));
 		}
 		if (userRepository.existsByUsername(user.getUsername())) {
 			throw new UserAlreadyExistedException();
