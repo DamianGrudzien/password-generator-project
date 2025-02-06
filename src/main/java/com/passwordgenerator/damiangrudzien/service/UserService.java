@@ -1,7 +1,7 @@
 package com.passwordgenerator.damiangrudzien.service;
 
-import com.passwordgenerator.damiangrudzien.model.User;
 import com.passwordgenerator.damiangrudzien.model.Role;
+import com.passwordgenerator.damiangrudzien.model.User;
 import com.passwordgenerator.damiangrudzien.model.enums.UserRole;
 import com.passwordgenerator.damiangrudzien.model.exceptions.UserAlreadyExistedException;
 import com.passwordgenerator.damiangrudzien.model.exceptions.UserNotFoundException;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -65,21 +64,6 @@ public class UserService implements UserDetailsService {
 		userRepository.delete(user);
 		log.info("User deleted: {}", user);
 	}
-
-	public void deleteAllUsers() {
-		userRepository.deleteAll();
-	}
-
-//	public User updateUser(User user) {
-//		User userToUpdate = userRepository.findUserByUsername(user.getUsername()).orElseThrow(UserNotFoundException::new);
-//		userToUpdate.setName(user.getName());
-//		userToUpdate.setSurname(user.getSurname());
-//		userToUpdate.setUsername(user.getUsername());
-//		userToUpdate.setPassword(user.getPassword());
-//		userToUpdate.setEmail(user.getEmail());
-//		userToUpdate.setPhoneNumber(user.getPhoneNumber());
-//		return userRepository.save(userToUpdate);
-//	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

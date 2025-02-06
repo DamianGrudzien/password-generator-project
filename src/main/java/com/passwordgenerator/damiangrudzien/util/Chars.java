@@ -23,7 +23,7 @@ public class Chars {
 
 	public static Map<String, String> getCharToReplace(ResourceLoader resourceLoader) {
 		Map<String, String> charsToReplace = new HashMap<>();
-		InputStream file = null;
+		InputStream file;
 		log.info("Config file path: {}",configFilePath);
 		try {
 			file = resourceLoader.getResource(configFilePath).getInputStream();

@@ -15,7 +15,7 @@ import java.util.List;
 public class CsvDataLoader {
 
 	private static final int BATCH_SIZE = 10000;
-	private CsvReader csvReader;
+	private final CsvReader csvReader;
 	private final WordRepository wordRepository;
 	@Value("${csv.file.path}")
 	private String csvFilePath;

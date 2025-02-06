@@ -6,7 +6,6 @@ import com.passwordgenerator.damiangrudzien.repository.jpa.WordRepository;
 import com.passwordgenerator.damiangrudzien.util.NumberGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class WordService {
 
 	private WordRepository wordRepository;
-	private ModelMapper modelMapper;
 
 	public Word findById(Long id) {
 		log.info("Find by Id started.");
