@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,11 +46,6 @@ public class WordController {
 	@GetMapping("/")
 	public List<Word> getAllWords() {
 		return wordService.findAll();
-	}
-
-	@PostMapping("/flush")
-	public void flushCache() {
-		wordService.flushCache();
 	}
 
 	@ExceptionHandler(NotFoundException.class)

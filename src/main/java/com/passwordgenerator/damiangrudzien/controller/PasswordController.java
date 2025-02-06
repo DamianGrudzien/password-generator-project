@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,14 +18,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/password/")
+@RequestMapping("api/v1/password")
 @Slf4j
 public class PasswordController {
 
 	@Autowired
 	PasswordService passwordService;
 
-	@PostMapping("/")
+	@PostMapping()
 	public PasswordDTO returnPasswordWithProperties(@RequestBody PasswordRequestDTO passwordRequest) {
 		log.info("Getting password from service.");
 		return passwordService.getPassword(passwordRequest);

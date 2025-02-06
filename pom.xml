@@ -17,7 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.passwordgenerator.damiangrudzien.Application</start-class>
         <flyway.version>9.10.2</flyway.version>
-        <springbootstarterdatajpa.version>3.0.1</springbootstarterdatajpa.version>
+        <springbootstarterdatajpa.version>3.1.2</springbootstarterdatajpa.version>
         <projectlombok.version>1.18.26</projectlombok.version>
     </properties>
 
@@ -37,41 +37,51 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>9.10.2</version>
+            <version>${flyway.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <version>3.0.1</version>
+            <version>3.1.2</version>
             <scope>test</scope>
-        </dependency>
-        <!--        Redis Cache    -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>5.0.0-alpha2</version>
-            <type>jar</type>
-            <exclusions>
-                <exclusion>  <!-- declare the exclusion here -->
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>3.1.1</version>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>3.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+        <!--        Redis Cache    -->
+<!--        <dependency>-->
+<!--            <groupId>redis.clients</groupId>-->
+<!--            <artifactId>jedis</artifactId>-->
+<!--            <version>5.0.0-alpha2</version>-->
+<!--            <type>jar</type>-->
+<!--            <exclusions>-->
+<!--                <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
+<!--                    <groupId>org.slf4j</groupId>-->
+<!--                    <artifactId>slf4j-api</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
+<!--            <version>3.1.2</version>-->
+<!--        </dependency>-->
         <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-actuator</artifactId>
-        <version>3.0.1</version>
+        <version>3.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -82,7 +92,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.4</version>
+            <version>42.7.4</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -95,6 +105,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.13.0</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>javax.servlet</groupId>-->
+<!--            <artifactId>javax.servlet-api</artifactId>-->
+<!--            <version>4.0.1</version> &lt;!&ndash; Adjust the version based on your runtime environment &ndash;&gt;-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -124,16 +140,17 @@
                     <locations>
                         <location>filesystem:src/main/resources/db.migration</location>
                     </locations>
-                    <url>jdbc:postgresql:dpg-cie0mcl9aq0ce398i3ng-a.frankfurt-postgres.render.com/words_db_iim7:5432/words_db_iim7</url>
+<!--                    <url>jdbc:postgresql:dpg-cie0mcl9aq0ce398i3ng-a.frankfurt-postgres.render.com/words_db_iim7:5432/words_db_iim7</url>-->
+                    <url>jdbc:postgresql://localhost:5432/postgresDB</url>
 <!--                    <url>jdbc:postgresql://localhost:5432/password_generator</url>-->
-                    <user>postgres</user>
-                    <password>postgres</password>
+                    <user>postgresUser</user>
+                    <password>postgresPW</password>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>42.5.1</version>
+                        <version>42.7.4</version>
                     </dependency>
                 </dependencies>
             </plugin>
