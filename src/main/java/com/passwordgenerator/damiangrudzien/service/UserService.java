@@ -32,6 +32,7 @@ public class UserService implements UserDetailsService {
 
 	public List<UserResponse> getAllUsers() {
 		List<User> users = userRepository.findAll();
+		log.info("Found users! Count: {}", users.size());
 		return users.stream().map(u -> modelMapper.map(u, UserResponse.class)).toList();
 	}
 

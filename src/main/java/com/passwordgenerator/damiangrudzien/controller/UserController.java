@@ -30,10 +30,10 @@ public class UserController {
 	private UserService userService;
 	private ModelMapper modelMapper;
 
-//	@PreAuthorize("hasAnyRole('ADMIN','USER')")
-	@GetMapping()
+	@PreAuthorize("hasAnyRole('ADMIN')")
+	@GetMapping({"", "/"})
 	@ResponseStatus(HttpStatus.OK)
-	public List<UserResponse> getAllUsers(){
+	public List<UserResponse> getAllUsers() {
 		log.info("Starting the return of users.");
 		return userService.getAllUsers();
 	}
@@ -45,19 +45,15 @@ public class UserController {
 		User savedUser = userService.saveUser(user);
 		return modelMapper.map(savedUser, UserResponse.class);
 	}
-	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping("/{username}")
 	@ResponseStatus(HttpStatus.OK)
 	public void deleteUser(@PathVariable String username) {
 		userService.deleteUser(username);
 	}
-	@PreAuthorize("hasAnyRole('ADMIN','USER')")
-	@DeleteMapping("/all")
-	@ResponseStatus(HttpStatus.OK)
-	public void deleteAllUsers() {
-		userService.deleteAllUsers();
-	}
-	@PreAuthorize("hasAnyRole('ADMIN','USER')")
+
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@GetMapping("/{username}")
 	@ResponseStatus(HttpStatus.OK)
 	public User getUser(@PathVariable String username) {

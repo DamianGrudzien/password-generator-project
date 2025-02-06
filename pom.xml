@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>9.10.2</version>
+            <version>${flyway.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -61,23 +61,23 @@
             <version>3.1.2</version>
         </dependency>
         <!--        Redis Cache    -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-            <version>5.0.0-alpha2</version>
-            <type>jar</type>
-            <exclusions>
-                <exclusion>  <!-- declare the exclusion here -->
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>3.1.2</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>redis.clients</groupId>-->
+<!--            <artifactId>jedis</artifactId>-->
+<!--            <version>5.0.0-alpha2</version>-->
+<!--            <type>jar</type>-->
+<!--            <exclusions>-->
+<!--                <exclusion>  &lt;!&ndash; declare the exclusion here &ndash;&gt;-->
+<!--                    <groupId>org.slf4j</groupId>-->
+<!--                    <artifactId>slf4j-api</artifactId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-data-redis</artifactId>-->
+<!--            <version>3.1.2</version>-->
+<!--        </dependency>-->
         <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-actuator</artifactId>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.5.4</version>
+            <version>42.7.4</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -140,16 +140,17 @@
                     <locations>
                         <location>filesystem:src/main/resources/db.migration</location>
                     </locations>
-                    <url>jdbc:postgresql:dpg-cie0mcl9aq0ce398i3ng-a.frankfurt-postgres.render.com/words_db_iim7:5432/words_db_iim7</url>
+<!--                    <url>jdbc:postgresql:dpg-cie0mcl9aq0ce398i3ng-a.frankfurt-postgres.render.com/words_db_iim7:5432/words_db_iim7</url>-->
+                    <url>jdbc:postgresql://localhost:5432/postgresDB</url>
 <!--                    <url>jdbc:postgresql://localhost:5432/password_generator</url>-->
-                    <user>postgres</user>
-                    <password>postgres</password>
+                    <user>postgresUser</user>
+                    <password>postgresPW</password>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.postgresql</groupId>
                         <artifactId>postgresql</artifactId>
-                        <version>42.5.1</version>
+                        <version>42.7.4</version>
                     </dependency>
                 </dependencies>
             </plugin>

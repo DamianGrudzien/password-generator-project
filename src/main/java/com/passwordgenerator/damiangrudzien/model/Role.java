@@ -17,6 +17,7 @@ public class Role implements GrantedAuthority {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonIgnore
 	private Long id;
 	@Enumerated(EnumType.STRING)
 	private UserRole roleName;

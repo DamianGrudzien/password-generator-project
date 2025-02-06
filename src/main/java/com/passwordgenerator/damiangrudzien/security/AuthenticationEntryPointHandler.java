@@ -20,7 +20,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class AuthenticationEntryPointHandler implements AuthenticationEntryPoint {
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper;
 
     @Override
     public void commence(HttpServletRequest request,

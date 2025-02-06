@@ -42,6 +42,11 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private UserStatus userStatus = UserStatus.UNLOCK;
 
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+
 	@Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {

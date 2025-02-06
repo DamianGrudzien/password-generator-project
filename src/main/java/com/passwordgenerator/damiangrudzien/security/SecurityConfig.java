@@ -25,11 +25,11 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Arrays;
 
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
-@AllArgsConstructor
-@Slf4j
+//@Configuration
+//@EnableWebSecurity
+//@EnableMethodSecurity
+//@AllArgsConstructor
+//@Slf4j
 public class SecurityConfig {
 
 
@@ -37,25 +37,21 @@ public class SecurityConfig {
     private CustomAuthenticationFailureHandler authenticationFailureHandler;
     private CustomAuthenticationSuccessHandler authenticationSuccessHandler;
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Bean
+//    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @Bean
+//    @Bean
     MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
         return new MvcRequestMatcher.Builder(introspector);
     }
 
 
-    @Bean
+//    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        log.info("inside cors");
+//        log.info("inside cors");
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://damiangrudzien.github.io/password-generator-react-app/"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
@@ -68,7 +64,7 @@ public class SecurityConfig {
         return source;
     }
 
-    @Bean
+//    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         http.cors(c -> c.configurationSource(corsConfigurationSource()));
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))

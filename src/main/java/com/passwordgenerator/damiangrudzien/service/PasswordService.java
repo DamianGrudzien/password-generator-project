@@ -5,6 +5,7 @@ import com.passwordgenerator.damiangrudzien.model.request.PasswordRequestDTO;
 import com.passwordgenerator.damiangrudzien.util.Chars;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +18,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PasswordService {
 
-	WordService wordService;
-	Chars chars;
+	private WordService wordService;
+	private ResourceLoader resourceLoader;
 
 	private static final Random RANDOM = new Random();
 
@@ -26,7 +27,7 @@ public class PasswordService {
 		List<String> randomWords = wordService.getRandomWords(passwordRequest.getWordAmount());
 		Boolean isUpperFirst = passwordRequest.getUpperFirst();
 
-		log.info("Is first letter upper: " + isUpperFirst);
+		log.info("Is first letter upper: {}", isUpperFirst);
 		if (Boolean.TRUE.equals(isUpperFirst)) {
 			randomWords = randomWords.stream()
 					.map(word -> word.substring(0, 1).toUpperCase() +
@@ -44,7 +45,7 @@ public class PasswordService {
 			}
 		}
 
-		Map<String, String> charsToReplace = chars.getCharToReplace();
+		Map<String, String> charsToReplace = Chars.getCharToReplace(resourceLoader);
 		String password;
 		int charAmount = passwordRequest.getCharAmount();
 		if (charAmount != 0 && !charsToReplace.isEmpty()) {
